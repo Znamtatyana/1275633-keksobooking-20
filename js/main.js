@@ -1,5 +1,5 @@
 'use strict';
-var PIN_WIDTH = 20;
+var PIN_WIDTH = 40;
 var PIN_HEIGHT = 40;
 
 var typeOfAd = ['palace', 'flat', 'house', 'bungalo'];
@@ -19,40 +19,35 @@ var getRandomInt = function (min, max) {
 var domRect = map.getBoundingClientRect();
 
 var mapArea = {
-  xMin: domRect.left + PIN_WIDTH,
+  xMin: domRect.left - (PIN_WIDTH / 2),
   yMin: 130 - PIN_HEIGHT,
-  xMax: domRect.width - PIN_WIDTH,
+  xMax: domRect.width - (PIN_WIDTH / 2),
   yMax: 630 - PIN_HEIGHT
 };
 
 var createAd = function (n) {
   var avatarImgNum = 1 + n;
-  var author = {
-    avatar: 'img/avatars/user0' + avatarImgNum + '.png'
-  };
 
   var location = {
     x: getRandomInt(mapArea.xMin, mapArea.xMax),
     y: getRandomInt(mapArea.yMin, mapArea.yMax)
   };
 
-  var offer = {
-    title: 'Квартира',
-    address: 'Адрес' + location.x + ',' + location.y,
-    price: 100,
-    type: typeOfAd[1],
-    rooms: 2,
-    guests: 2,
-    checkin: checkinTime[1],
-    checkout: checkoutTime[1],
-    features: featuresAddition[1],
-    description: '',
-    photos: photosRoom
-  };
-
   var pin = {
-    author: author,
-    offer: offer,
+    author: {avatar: 'img/avatars/user0' + avatarImgNum + '.png'},
+    offer: {
+      title: 'Квартира',
+      address: 'Адрес' + location.x + ',' + location.y,
+      price: 100,
+      type: typeOfAd[1],
+      rooms: 2,
+      guests: 2,
+      checkin: checkinTime[1],
+      checkout: checkoutTime[1],
+      features: featuresAddition.slice(0, featuresAddition.length - 1),
+      description: '',
+      photos: photosRoom.slice(0, photosRoom.length - 1)
+    },
     location: location
   };
 
@@ -62,8 +57,7 @@ var createAd = function (n) {
 var createAds = function () {
   var arrayOfPins = [];
   for (var i = 0; i < 8; i++) {
-    var pinNew = createAd(i, mapArea);
-    arrayOfPins.push(pinNew);
+    arrayOfPins.push(createAd(i));
   }
 
   return arrayOfPins;
@@ -75,7 +69,7 @@ var pinTemplate = document.querySelector('#pin')
     .content
     .querySelector('.map__pin');
 
-var createElement = function (ad) {
+var createPin = function (ad) {
 
   var pinElement = pinTemplate.cloneNode(true);
 
@@ -91,9 +85,9 @@ var renderPins = function (pins, target) {
   var fragment = document.createDocumentFragment();
 
   for (var i = 0; i < pins.length; i++) {
-    fragment.appendChild(createElement(pins[i]));
+    fragment.appendChild(createPin(pins[i]));
   }
   target.appendChild(fragment);
 };
 
-renderPins(createAds(mapArea), pinList);
+renderPins(createAds(), pinList);
