@@ -1,6 +1,6 @@
 'use strict';
-var PIN_WIDTH = 40;
-var PIN_HEIGHT = 40;
+var PIN_WIDTH = 50;
+var PIN_HEIGHT = 70;
 
 var typeOfAd = ['palace', 'flat', 'house', 'bungalo'];
 var checkinTime = ['12:00', '13:00', '14:00'];
@@ -37,16 +37,16 @@ var createAd = function (n) {
     author: {avatar: 'img/avatars/user0' + avatarImgNum + '.png'},
     offer: {
       title: 'Квартира',
-      address: 'Адрес' + location.x + ',' + location.y,
+      address: 'Адрес ' + location.x + ',' + location.y,
       price: 100,
-      type: typeOfAd[1],
+      type: typeOfAd[3],
       rooms: 2,
       guests: 2,
       checkin: checkinTime[1],
       checkout: checkoutTime[1],
-      features: featuresAddition.slice(0, featuresAddition.length - 1),
+      features: featuresAddition.slice(0, featuresAddition.length - 2),
       description: '',
-      photos: photosRoom.slice(0, photosRoom.length - 1)
+      photos: photosRoom.slice(0, photosRoom.length)
     },
     location: location
   };
@@ -76,7 +76,6 @@ var createPin = function (ad) {
   pinElement.querySelector('img').src = ad.author.avatar;
   pinElement.querySelector('img').alt = ad.offer.title;
   pinElement.style = 'left:' + ad.location.x + 'px;' + 'top:' + ad.location.y + 'px;';
-
   return pinElement;
 };
 
@@ -91,3 +90,75 @@ var renderPins = function (pins, target) {
 };
 
 renderPins(createAds(), pinList);
+
+// функция создания карточки объявления
+var cardList = document.querySelector('.map');
+var cardTemplate = document.querySelector('#card')
+    .content
+    .querySelector('.map__card');
+
+var createCard = function (ad) {
+
+  var cardElement = cardTemplate.cloneNode(true);
+
+  cardElement.querySelector('.popup__title').textContent = ad.offer.title;
+  cardElement.querySelector('.popup__text--address').textContent = ad.offer.address;
+  cardElement.querySelector('.popup__text--price').textContent = ad.offer.price + '₽/ночь';
+
+  var popupType = cardElement.querySelector('.popup__type');
+  if(ad.offer.type === 'palace') {
+    popupType.textContent = 'Дворец';
+  }
+  if(ad.offer.type === 'flat') {
+    popupType.textContent = 'Квартира';
+  }
+  if(ad.offer.type === 'house') {
+    popupType.textContent = 'Дом';
+  }
+  if(ad.offer.type === 'bungalo') {
+    popupType.textContent = 'Бунгало';
+  }
+
+  cardElement.querySelector('.popup__text--capacity').textContent = ad.offer.rooms + ' комнаты для ' + ad.offer.guests + ' гостей.';
+  cardElement.querySelector('.popup__text--time').textContent = 'Заезд после ' + ad.offer.checkin + ', выезд до ' + ad.offer.checkout + '.';
+
+  // var featuresList = cardElement.querySelector('.popup__features');
+  // var featuresItems = featuresList.children;
+
+  // for (var i = 0; i < featuresItems.length; i++) {
+  //   for(var j = 0; j < ad.offer.features.length; j++) {
+  //     if (featuresItems[i].text == 'conditioner') {
+  //       featuresItems.appendChild(featuresItems[i])
+  //     } else {featuresItems[i].remove}
+  //   }
+  // }
+  // featuresList = featuresItems;
+
+  cardElement.querySelector('.popup__description').textContent = ad.offer.description;
+  cardElement.querySelector('.popup__avatar').src = ad.author.avatar;
+
+  var photosList = cardElement.querySelector('.popup__photos');
+  var photo = cardElement.querySelectorAll('.popup__photo');
+  for (var i = 0; i < ad.offer.photos.length; i++) {
+    var newPhoto = photo[0].cloneNode(true);
+    newPhoto.src = ad.offer.photos[i];
+    photosList.appendChild(newPhoto);
+  }
+  photosList.removeChild(photo[0]);
+  return cardElement;
+};
+
+var renderCard = function (pins, target) {
+  var fragment = document.createDocumentFragment();
+
+  for (var i = 0; i < pins.length; i++) {
+    fragment.appendChild(createCard(pins[0]));
+  }
+  target.appendChild(fragment);
+};
+
+renderCard(createAds(), cardList);
+
+
+console.log(createCard(createAds()[0]));
+
