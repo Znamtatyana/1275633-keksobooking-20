@@ -21,7 +21,6 @@ var createAd = function (n) {
     x: getRandomInt(mapRect.left - (PIN_WIDTH / 2), mapRect.width - (PIN_WIDTH / 2)),
     y: getRandomInt(130 - PIN_HEIGHT, 630 - PIN_HEIGHT)
   };
-console.log(location);
   return {
     author: {avatar: 'img/avatars/user0' + n + '.png'},
     offer: {
