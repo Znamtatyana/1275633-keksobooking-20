@@ -6,6 +6,12 @@ var TYPE = ['palace', 'flat', 'house', 'bungalo'];
 var TIME = ['12:00', '13:00', '14:00'];
 var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 var PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
+var TYPES = {
+  'palace': 'Дворец',
+  'flat': 'Квартира',
+  'house': 'Дом',
+  'bungalo': 'Бунгало'
+};
 
 var map = document.querySelector('.map');
 map.classList.remove('map--faded');
@@ -27,11 +33,11 @@ var createAd = function (n) {
       title: 'Квартира',
       address: 'Адрес ' + location.x + ',' + location.y,
       price: 100,
-      type: TYPE[getRandomInt(1, TYPE.length)],
+      type: TYPE[getRandomInt(0, TYPE.length - 1)],
       rooms: 2,
       guests: 2,
-      checkin: TIME[getRandomInt(1, TIME.length)],
-      checkout: TIME[getRandomInt(1, TIME.length)],
+      checkin: TIME[getRandomInt(0, TIME.length - 1)],
+      checkout: TIME[getRandomInt(0, TIME.length - 1)],
       features: FEATURES.slice(0, getRandomInt(1, FEATURES.length)),
       description: '',
       photos: PHOTOS.slice(0, getRandomInt(1, PHOTOS.length))
@@ -86,13 +92,7 @@ var renderCard = function (ad) {
   cardTemplate.querySelector('.popup__title').textContent = ad.offer.title;
   cardTemplate.querySelector('.popup__text--address').textContent = ad.offer.address;
   cardTemplate.querySelector('.popup__text--price').textContent = ad.offer.price + '₽/ночь';
-  var types = {
-    'palace': 'Дворец',
-    'flat': 'Квартира',
-    'house': 'Дом',
-    'bungalo': 'Бунгало'
-  };
-  cardTemplate.querySelector('.popup__type').textContent = types[ad.offer.type];
+  cardTemplate.querySelector('.popup__type').textContent = TYPES[ad.offer.type];
 
   cardTemplate.querySelector('.popup__text--capacity').textContent = ad.offer.rooms + ' комнаты для ' + ad.offer.guests + ' гостей.';
   cardTemplate.querySelector('.popup__text--time').textContent = 'Заезд после ' + ad.offer.checkin + ', выезд до ' + ad.offer.checkout + '.';
