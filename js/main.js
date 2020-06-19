@@ -1,6 +1,8 @@
 'use strict';
 var PIN_WIDTH = 50;
 var PIN_HEIGHT = 70;
+var PIN_MAIN_SIZE = 65;
+var PIN_MAIN_HEIGHT = PIN_MAIN_SIZE + 22;
 
 var TYPE = ['palace', 'flat', 'house', 'bungalo'];
 var TIME = ['12:00', '13:00', '14:00'];
@@ -13,13 +15,11 @@ var TYPES = {
   'bungalo': 'Бунгало'
 };
 
-var map = document.querySelector('.map');
-map.classList.remove('map--faded');
-
 var getRandomInt = function (min, max) {
   return Math.floor(min + Math.random() * (max + 1 - min));
 };
 
+var map = document.querySelector('.map');
 var mapRect = map.getBoundingClientRect();
 
 var createAd = function (n) {
@@ -81,8 +81,7 @@ var renderPins = function () {
   pinList.appendChild(fragment);
 };
 
-renderPins(ads);
-// функция создания карточки объявления
+// // функция создания карточки объявления
 
 var cardTemplate = document.querySelector('#card')
     .content
@@ -130,3 +129,56 @@ var renderCard = function (ad) {
 };
 
 renderCard(ads[1]);
+
+var adForm = document.querySelector('.ad-form');
+var selects = document.querySelectorAll('select');
+var fieldsets = document.querySelectorAll('fieldset');
+var addressInput = document.querySelector('#address');
+var mapPinMain = document.querySelector('.map__pin--main');
+
+var changeAttribute = function (elements) {
+  for (var i = 0; i < elements.length; i++) {
+    if (!elements[i].hasAttribute('disabled')) {
+      elements[i].setAttribute('disabled', 'disabled');
+    } else {
+      elements[i].removeAttribute('disabled');
+    }
+  }
+};
+
+// Неактивное состояние
+var deactivateMain = function () {
+  map.classList.add('map--faded');
+  adForm.classList.add('ad-form--disabled');
+  changeAttribute(selects);
+  changeAttribute(fieldsets);
+  addressInput.value = (parseInt(mapPinMain.style.left, 10) - Math.floor(0.5 * PIN_MAIN_SIZE)) + ', ' + (parseInt(mapPinMain.style.top, 10) - Math.floor(0.5 * PIN_MAIN_SIZE));
+};
+deactivateMain();
+
+// Активное состояние
+var pinMain = document.querySelector('.map__pin--main');
+var changeAddress = function (element, sizeX, sizeY) {
+  addressInput.value = (parseInt(element.style.left, 10) - Math.floor(0.5 * sizeX)) + ', ' + (parseInt(element.style.top, 10) - sizeY);
+};
+
+var activateMain = function () {
+  map.classList.remove('map--faded');
+  adForm.classList.remove('ad-form--disabled');
+  addressInput.setAttribute('disabled', 'disabled');
+  changeAttribute(selects);
+  changeAttribute(fieldsets);
+  renderPins(ads);
+  changeAddress(mapPinMain, PIN_MAIN_SIZE, PIN_MAIN_HEIGHT);
+};
+
+pinMain.addEventListener('mousedown', function () {
+  activateMain();
+});
+
+pinMain.addEventListener('keydown', function (evt) {
+  if (evt.key === 'Enter') {
+    activateMain();
+  }
+});
+
