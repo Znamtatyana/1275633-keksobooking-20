@@ -81,7 +81,7 @@ var renderPins = function () {
   pinList.appendChild(fragment);
 };
 
-// // функция создания карточки объявления
+// функция создания карточки объявления
 
 var cardTemplate = document.querySelector('#card')
     .content
@@ -136,7 +136,7 @@ var messageTemplate = document.querySelector('#success')
     .content
     .querySelector('.success');
 
-var renderMessage = function() {
+var renderMessage = function () {
   main.appendChild(messageTemplate);
 };
 
@@ -145,7 +145,7 @@ var errorMessageTemplate = document.querySelector('#error')
     .content
     .querySelector('.error');
 
-var renderErrorMessage = function() {
+var renderErrorMessage = function () {
   main.appendChild(errorMessageTemplate);
 };
 
@@ -201,3 +201,48 @@ pinMain.addEventListener('keydown', function (evt) {
   }
 });
 
+// Синхронизация типа жилья с минимальным значением цены и placeholder
+var TYPES_HOUSING = {
+  'palace': '10000',
+  'flat': '1000',
+  'house': '5000',
+  'bungalo': '0'
+};
+var typeHousing = document.querySelector('#type');
+var priceHousing = document.querySelector('#price');
+
+var changesPrice = function (evt) {
+  priceHousing.setAttribute('placeholder', TYPES_HOUSING[evt.target.value]);
+  priceHousing.setAttribute('min', TYPES_HOUSING[evt.target.value]);
+};
+
+typeHousing.addEventListener('change', changesPrice);
+
+// Синхронизация времени заезда - выезда
+var timeForm = document.querySelector('.ad-form__element--time');
+var checkInTimes = document.querySelectorAll('#timein option');
+var checkOutTimes = document.querySelectorAll('#timeout option');
+var changesTime = function (evt) {
+  for (var i = 0; i < checkOutTimes.length; i++) {
+    if (evt.target.value === checkOutTimes[i].value) {
+      checkOutTimes[i].setAttribute('selected', 'selected');
+    } else {
+      checkOutTimes[i].removeAttribute('selected');
+    }
+  }
+  for (var i = 0; i < checkInTimes.length; i++) {
+    if (evt.target.value === checkInTimes[i].value) {
+      checkInTimes[i].setAttribute('selected', 'selected');
+    } else {
+      checkInTimes[i].removeAttribute('selected');
+    }
+  }
+};
+
+timeForm.addEventListener('change', changesTime);
+
+var resetButton = document.querySelector('.ad-form__reset');
+resetButton.addEventListener('click', function (evt) {
+  evt.preventDefault();
+  deactivateMain();
+});
