@@ -131,23 +131,23 @@ var renderCard = function (ad) {
 renderCard(ads[1]);
 
 // Функция создания сообщения об успешной отправке формы
-var main = document.querySelector('main');
-var messageTemplate = document.querySelector('#success')
-    .content
-    .querySelector('.success');
+// var main = document.querySelector('main');
+// var messageTemplate = document.querySelector('#success')
+//     .content
+//     .querySelector('.success');
 
-var renderMessage = function () {
-  main.appendChild(messageTemplate);
-};
+// var renderMessage = function () {
+//   main.appendChild(messageTemplate);
+// };
 
-// Функция создания сообщения об ошибочной отправке формы
-var errorMessageTemplate = document.querySelector('#error')
-    .content
-    .querySelector('.error');
+// // Функция создания сообщения об ошибочной отправке формы
+// var errorMessageTemplate = document.querySelector('#error')
+//     .content
+//     .querySelector('.error');
 
-var renderErrorMessage = function () {
-  main.appendChild(errorMessageTemplate);
-};
+// var renderErrorMessage = function () {
+//   main.appendChild(errorMessageTemplate);
+// };
 
 var adForm = document.querySelector('.ad-form');
 var selects = document.querySelectorAll('select');
