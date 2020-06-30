@@ -2,7 +2,7 @@
 var PIN_WIDTH = 50;
 var PIN_HEIGHT = 70;
 var PIN_MAIN_WIDTH = 65;
-var PIN_MAIN_HEIGHT = PIN_MAIN_WIDTH + 17;
+var PIN_MAIN_HEIGHT = PIN_MAIN_WIDTH + 22;
 
 var TYPE = ['palace', 'flat', 'house', 'bungalo'];
 var TIME = ['12:00', '13:00', '14:00'];
@@ -166,7 +166,7 @@ var deactivateAttribute = function (elements) {
 var activateAttribute = function (elements) {
   for (var i = 0; i < elements.length; i++) {
     if (elements[i].hasAttribute('disabled')) {
-      elements[i].removeAttribute('disabled', 'disabled');
+      elements[i].removeAttribute('disabled');
     }
   }
 };
@@ -218,7 +218,6 @@ var deactivatePage = function () {
 };
 
 // Активное состояние
-var pinMain = document.querySelector('.map__pin--main');
 var changeAddress = function (element, sizeX, sizeY) {
   addressInput.value = (parseInt(element.style.left, 10) + Math.floor(0.5 * sizeX)) + ', ' + (parseInt(element.style.top, 10) + sizeY);
 };
@@ -226,18 +225,18 @@ var changeAddress = function (element, sizeX, sizeY) {
 var activatePage = function () {
   map.classList.remove('map--faded');
   adForm.classList.remove('ad-form--disabled');
-  addressInput.setAttribute('disabled', 'disabled');
+  addressInput.setAttribute('readonly', 'readonly');
   activateAttribute(selects);
   activateAttribute(fieldsets);
   renderPins(ads);
   changeAddress(mapPinMain, PIN_MAIN_WIDTH, PIN_MAIN_HEIGHT);
 };
 
-pinMain.addEventListener('mousedown', function () {
+mapPinMain.addEventListener('mousedown', function () {
   activatePage();
 });
 
-pinMain.addEventListener('keydown', function (evt) {
+mapPinMain.addEventListener('keydown', function (evt) {
   if (evt.key === 'Enter') {
     activatePage();
   }
