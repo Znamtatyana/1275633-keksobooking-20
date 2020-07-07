@@ -128,8 +128,6 @@ var renderCard = function (ad) {
   pinList.after(cardTemplate);
 };
 
-renderCard(ads[1]);
-
 // Функция создания сообщения об успешной отправке формы
 // var main = document.querySelector('main');
 // var messageTemplate = document.querySelector('#success')
@@ -230,6 +228,7 @@ var activatePage = function () {
   activateAttribute(fieldsets);
   renderPins(ads);
   changeAddress(mapPinMain, PIN_MAIN_WIDTH, PIN_MAIN_HEIGHT);
+  pinCard();
 };
 
 mapPinMain.addEventListener('mousedown', function () {
@@ -277,4 +276,34 @@ var resetButton = document.querySelector('.ad-form__reset');
 resetButton.addEventListener('click', function () {
   deactivatePage();
   initPage();
+});
+
+// открытие карточки
+
+var pinCard = function () {
+  var pins = document.querySelectorAll('.map__pin:not(.map__pin--main)');
+  for (var i = 0; i < pins.length; i++) {
+    pins[i].addEventListener('click', function () {
+      renderCard(ads[1]);
+    });
+  }
+};
+
+// закрытие карточки
+var card = document.querySelector('.map__card');
+var removeCard = function () {
+  card.remove();
+};
+
+var popupClose = document.querySelector('.popup__close');
+popupClose.addEventListener('click', function (evt) {
+  evt.preventDefault();
+  removeCard();
+});
+
+document.addEventListener('keydown', function (evt) {
+  if (evt.key === 'Escape') {
+    evt.preventDefault();
+    removeCard();
+  }
 });
