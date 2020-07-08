@@ -72,6 +72,8 @@ var createPin = function (ad) {
 
 // заполнениe блока DOM-элементами на основе массива JS-объектов
 var ads = createAds();
+var pinIsRendered = false;
+
 var renderPins = function () {
   var fragment = document.createDocumentFragment();
 
@@ -79,6 +81,7 @@ var renderPins = function () {
     fragment.appendChild(createPin(ads[i]));
   }
   pinList.appendChild(fragment);
+  pinIsRendered = true;
 };
 
 // функция создания карточки объявления
@@ -209,6 +212,7 @@ var initPage = function () {
 
 initPage();
 
+
 // Неактивное состояние
 var deactivatePage = function () {
   removePins();
@@ -219,16 +223,17 @@ var deactivatePage = function () {
 var changeAddress = function (element, sizeX, sizeY) {
   addressInput.value = (parseInt(element.style.left, 10) + Math.floor(0.5 * sizeX)) + ', ' + (parseInt(element.style.top, 10) + sizeY);
 };
-
 var activatePage = function () {
   map.classList.remove('map--faded');
   adForm.classList.remove('ad-form--disabled');
   addressInput.setAttribute('readonly', 'readonly');
   activateAttribute(selects);
   activateAttribute(fieldsets);
-  renderPins(ads);
   changeAddress(mapPinMain, PIN_MAIN_WIDTH, PIN_MAIN_HEIGHT);
-  pinCard();
+  openPopup();
+  if (pinIsRendered === false) {
+    renderPins(ads);
+  }
 };
 
 mapPinMain.addEventListener('mousedown', function () {
@@ -280,30 +285,43 @@ resetButton.addEventListener('click', function () {
 
 // открытие карточки
 
-var pinCard = function () {
+var openCard = function (render) {
+  render;
+  document.addEventListener('keydown', onPopupEscPress);
+  closeCard();
+};
+
+var openPopup = function () {
   var pins = document.querySelectorAll('.map__pin:not(.map__pin--main)');
-  for (var i = 0; i < pins.length; i++) {
-    pins[i].addEventListener('click', function () {
-      renderCard(ads[1]);
+  pins.forEach(function (item, i) {
+    item.addEventListener('click', function () {
+      openCard(renderCard(ads[i]));
     });
-  }
+    item.addEventListener('keydown', function (evt) {
+      if (evt.key === 'Enter') {
+        openCard(renderCard(ads[i]));
+      }
+    });
+  });
 };
 
 // закрытие карточки
-var card = document.querySelector('.map__card');
 var removeCard = function () {
+  var card = document.querySelector('.map__card');
   card.remove();
 };
 
-var popupClose = document.querySelector('.popup__close');
-popupClose.addEventListener('click', function (evt) {
-  evt.preventDefault();
-  removeCard();
-});
-
-document.addEventListener('keydown', function (evt) {
+var onPopupEscPress = function (evt) {
   if (evt.key === 'Escape') {
     evt.preventDefault();
     removeCard();
   }
-});
+};
+
+var closeCard = function () {
+  var popupClose = document.querySelector('.popup__close');
+  popupClose.addEventListener('click', function () {
+    removeCard();
+    document.removeEventListener('keydown', onPopupEscPress);
+  });
+};
