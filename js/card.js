@@ -40,7 +40,7 @@
 
     var photosList = cardElement.querySelector('.popup__photos');
     var photoFragment = new DocumentFragment();
-    var photo = cardElement.querySelector('.popup__photo');
+    var photo = cardTemplate.querySelector('.popup__photo');
     for (i = 0; i < ad.offer.photos.length; i++) {
       var newPhoto = photo.cloneNode(true);
       newPhoto.src = ad.offer.photos[i];

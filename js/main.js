@@ -65,13 +65,10 @@
   };
 
   mapPinMain.addEventListener('click', onActivatePage);
-  mapPinMain.addEventListener('mousedown', function () {
-    onActivatePage();
-  });
-
+  mapPinMain.addEventListener('mousedown', onActivatePage);
   mapPinMain.addEventListener('keydown', function (evt) {
     if (evt.key === 'Enter') {
-      onActivatePage();
+      onActivatePage(evt);
     }
   });
 

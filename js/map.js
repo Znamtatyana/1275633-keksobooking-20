@@ -13,10 +13,12 @@
       target = null;
     }
 
-    var pins = document.querySelectorAll('.map__pin');
-    var index = [].slice.call(pins).indexOf(target);
-    window.card.renderCard(window.data.pins[index - 1]);
-    pins[index].classList.add('map__pin--active');
+    if (target) {
+      var pins = document.querySelectorAll('.map__pin:not(.map__pin--main)');
+      var index = [].slice.call(pins).indexOf(target);
+      window.card.renderCard(window.data.pins[index]);
+      pins[index].classList.add('map__pin--active');
+    }
   };
 
   map.addEventListener('click', onClickMap);
