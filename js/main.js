@@ -61,8 +61,8 @@
     window.pin.renderPins();
   };
 
-  var onError = function (error) {
-    console.log(error);
+  var onError = function () {
+    // console.log(error);
   };
 
   mapPinMain.addEventListener('click', onActivatePage);
