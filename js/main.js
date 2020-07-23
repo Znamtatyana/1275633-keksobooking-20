@@ -46,7 +46,7 @@
     evt.stopPropagation();
     if (map.classList.contains('map--faded')) {
       map.classList.remove('map--faded');
-      window.backend.load(onSuccess);//  , onError);
+      window.backend.load(onSuccess, onError);
       window.move.setMoveListener(evt);
     }
     adForm.classList.remove('ad-form--disabled');
@@ -60,9 +60,10 @@
     window.data.pins = response;
     window.pin.renderPins();
   };
-  // var onError = function (error) {
-  //   console.log(error);
-  // };
+
+  var onError = function () {
+    // console.log(error);
+  };
 
   mapPinMain.addEventListener('click', onActivatePage);
   mapPinMain.addEventListener('mousedown', onActivatePage);
