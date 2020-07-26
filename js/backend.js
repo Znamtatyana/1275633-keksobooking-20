@@ -1,4 +1,5 @@
 'use strict';
+
 (function () {
   var LOAD_URL = 'https://javascript.pages.academy/keksobooking/data';
   var SAVE_URL = 'https://javascript.pages.academy/keksobooking';
