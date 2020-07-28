@@ -59,6 +59,5 @@
     mainPinHeight: MAIN_PIN_HEIGHT,
     pins: [],
     filtered: [],
-
   };
 })();

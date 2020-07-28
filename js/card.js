@@ -47,6 +47,7 @@
     }
     photosElement.appendChild(photosList);
 
+<<<<<<< HEAD
     featuresElement.style.display = ad.offer.features.length > 0 ? 'flex' : 'none';
     photosElement.style.display = ad.offer.photos.length > 0 ? 'flex' : 'none';
 
@@ -68,11 +69,36 @@
     window.pin.removeActive();
     cardCloseButton.removeEventListener('click', onCardClose);
     document.removeEventListener('keydown', onCardCloseByEsc);
+=======
+    mapPinsElement.after(cardElement);
+
+    cardCloseButton.addEventListener('click', closeCard);
+    document.addEventListener('keydown', closeCardByEsc);
+    window.pin.removeActive();
+  };
+
+  var closeCardByEsc = function (evt) {
+    if (evt.key === 'Escape') {
+      closeCard();
+    }
+  };
+
+  var closeCard = function () {
+    cardElement.remove();
+    window.pin.removeActive();
+    cardCloseButton.removeEventListener('click', closeCard);
+    document.removeEventListener('keydown', closeCardByEsc);
+>>>>>>> 7c87527112f83470860cec20c5ac048afdb780fa
   };
 
 
   window.card = {
+<<<<<<< HEAD
     render: renderCard,
     close: onCardClose,
+=======
+    renderCard: renderCard,
+    closeCard: closeCard,
+>>>>>>> 7c87527112f83470860cec20c5ac048afdb780fa
   };
 })();
